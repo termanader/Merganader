@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Form1
+Partial Class CSVTemplateMerge
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,6 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.csvDataGrid = New System.Windows.Forms.DataGridView()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -30,18 +29,19 @@ Partial Class Form1
         Me.LoadTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveDataCSVAsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.headerBox = New System.Windows.Forms.TextBox()
-        Me.tplBox = New System.Windows.Forms.TextBox()
+        Me.templateBox = New System.Windows.Forms.TextBox()
         Me.genresButton = New System.Windows.Forms.Button()
         Me.outputBox = New System.Windows.Forms.TextBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.varHeaderBox = New System.Windows.Forms.ListBox()
         CType(Me.csvDataGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'csvDataGrid
         '
+        Me.csvDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.csvDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.csvDataGrid.Location = New System.Drawing.Point(12, 27)
         Me.csvDataGrid.Name = "csvDataGrid"
@@ -89,23 +89,14 @@ Partial Class Form1
         Me.SaveDataCSVAsToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.SaveDataCSVAsToolStripMenuItem.Text = "Data CSV as..."
         '
-        'headerBox
+        'templateBox
         '
-        Me.headerBox.Location = New System.Drawing.Point(12, 229)
-        Me.headerBox.Multiline = True
-        Me.headerBox.Name = "headerBox"
-        Me.headerBox.Size = New System.Drawing.Size(185, 186)
-        Me.headerBox.TabIndex = 2
-        Me.headerBox.Text = "<<team>>" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<<player0>>" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<<player1>>" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<<player2>>" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
-        '
-        'tplBox
-        '
-        Me.tplBox.Location = New System.Drawing.Point(204, 229)
-        Me.tplBox.Multiline = True
-        Me.tplBox.Name = "tplBox"
-        Me.tplBox.Size = New System.Drawing.Size(340, 215)
-        Me.tplBox.TabIndex = 3
-        Me.tplBox.Text = "{" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & """<<team>>"" ; [" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""0"",""<<player0>>""]," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""1"",""<<player1>>""]," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""2"",""<<pla" & _
+        Me.templateBox.Location = New System.Drawing.Point(204, 229)
+        Me.templateBox.Multiline = True
+        Me.templateBox.Name = "templateBox"
+        Me.templateBox.Size = New System.Drawing.Size(340, 215)
+        Me.templateBox.TabIndex = 3
+        Me.templateBox.Text = "{" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & """<<team>>"" : [" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""0"",""<<player0>>""]," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""1"",""<<player1>>""]," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""2"",""<<pla" & _
     "yer2>>""]" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & "]" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "}"
         '
         'genresButton
@@ -114,7 +105,7 @@ Partial Class Form1
         Me.genresButton.Name = "genresButton"
         Me.genresButton.Size = New System.Drawing.Size(184, 23)
         Me.genresButton.TabIndex = 4
-        Me.genresButton.Text = "Button1"
+        Me.genresButton.Text = "Generate"
         Me.genresButton.UseVisualStyleBackColor = True
         '
         'outputBox
@@ -125,7 +116,6 @@ Partial Class Form1
         Me.outputBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.outputBox.Size = New System.Drawing.Size(531, 129)
         Me.outputBox.TabIndex = 5
-        Me.outputBox.Text = resources.GetString("outputBox.Text")
         '
         'StatusStrip1
         '
@@ -139,21 +129,29 @@ Partial Class Form1
         '
         Me.OpenFileDialog1.FileName = "Select a CSV..."
         '
-        'Form1
+        'varHeaderBox
+        '
+        Me.varHeaderBox.FormattingEnabled = True
+        Me.varHeaderBox.Location = New System.Drawing.Point(13, 229)
+        Me.varHeaderBox.Name = "varHeaderBox"
+        Me.varHeaderBox.Size = New System.Drawing.Size(184, 186)
+        Me.varHeaderBox.TabIndex = 7
+        '
+        'CSVTemplateMerge
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(556, 608)
+        Me.Controls.Add(Me.varHeaderBox)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.outputBox)
         Me.Controls.Add(Me.genresButton)
-        Me.Controls.Add(Me.tplBox)
-        Me.Controls.Add(Me.headerBox)
+        Me.Controls.Add(Me.templateBox)
         Me.Controls.Add(Me.csvDataGrid)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
-        Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Name = "CSVTemplateMerge"
+        Me.Text = "CSV Template Merganader"
         CType(Me.csvDataGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
@@ -166,13 +164,13 @@ Partial Class Form1
     Friend WithEvents FileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents LoadDataCSVToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents LoadTemplateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents headerBox As System.Windows.Forms.TextBox
-    Friend WithEvents tplBox As System.Windows.Forms.TextBox
+    Friend WithEvents templateBox As System.Windows.Forms.TextBox
     Friend WithEvents genresButton As System.Windows.Forms.Button
     Friend WithEvents outputBox As System.Windows.Forms.TextBox
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SaveDataCSVAsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents varHeaderBox As System.Windows.Forms.ListBox
 
 End Class

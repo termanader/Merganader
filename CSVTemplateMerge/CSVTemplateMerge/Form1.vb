@@ -1,5 +1,12 @@
-﻿Public Class Form1
+﻿'Imports LINQtoCSV
+Imports System
+Imports Microsoft
+
+Public Class CSVTemplateMerge
     Dim csvName As String = ""
+    Dim listSize As Integer
+    Dim rowCount As Integer
+    Dim listVariables As New Generic.List(Of String)
     Private Sub LoadDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadDataCSVToolStripMenuItem.Click
         Dim csvName As String = ""
         OpenFileDialog1.InitialDirectory = "c:\temp\"
@@ -21,6 +28,7 @@
         Dim UpperBound As Int32
         Dim ColumnCount As Int32
         Dim CurrentRow As String()
+        Dim pubHeaders As New Generic.List(Of String)
 
         While Not CSVFileReader.EndOfData
             Try
@@ -32,31 +40,40 @@
                         'Get Number of columns
                         UpperBound = CurrentRow.GetUpperBound(0)
                         'Create new datatable
+                        Dim colHeaders(UpperBound)
+                        For ColumnCount = 0 To UpperBound
+                            colHeaders(ColumnCount) = CurrentRow(ColumnCount).ToString
+                            pubHeaders.Add(colHeaders(ColumnCount).ToString)
+                        Next
                         For ColumnCount = 0 To UpperBound
                             Column = New DataColumn
                             Column.DataType = System.Type.GetType("System.String")
-                            Column.ColumnName = "Column" & ColumnCount
-                            Column.Caption = "Column" & ColumnCount
+                            Column.ColumnName = colHeaders(ColumnCount)
+                            Column.Caption = CurrentRow(ColumnCount).ToString
                             CSVFileTable.Columns.Add(Column)
                         Next
                     End If
                     Row = CSVFileTable.NewRow
                     For ColumnCount = 0 To UpperBound
-                        Row("Column" & ColumnCount) = CurrentRow(ColumnCount).ToString
+                        Row(pubHeaders(ColumnCount)) = CurrentRow(ColumnCount).ToString
+                        'Row()
                     Next
                     CSVFileTable.Rows.Add(Row)
+
                 End If
             Catch ex As Exception
                 MsgBox("Line " & ex.Message & "is not valid and will be skipped.")
             End Try
         End While
         CSVFileReader.Dispose()
+        CSVFileTable.Rows.RemoveAt(0)
+        rowCount = CSVFileTable.Rows.Count
         csvDataGrid.DataSource = CSVFileTable
-
-
-    End Sub
-   
-    Private Sub StatusStrip1_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles StatusStrip1.ItemClicked
+        listSize = pubHeaders.Count - 1
+        For i = 0 To listSize
+            varHeaderBox.Items.Add("<<" + pubHeaders(i) + ">>")
+            listVariables.Add("<<" + pubHeaders(i) + ">>")
+        Next
 
     End Sub
 
@@ -98,7 +115,22 @@
 
     End Sub
 
-    Private Sub headerBox_TextChanged(sender As Object, e As EventArgs) Handles headerBox.TextChanged
+
+    Private Sub varHeaderBox_DoubleClick(sender As Object, e As EventArgs) Handles varHeaderBox.MouseDoubleClick
+        templateBox.Text = templateBox.Text.Insert(0, varHeaderBox.SelectedItem)
+
+    End Sub
+
+    Private Sub genresButton_Click(sender As Object, e As EventArgs) Handles genresButton.Click
+        Dim temp = templateBox.Text
+        For i = 1 To rowCount
+            Dim media = temp
+            For l = 0 To listSize
+                media = media.Replace(listVariables(l), 11)
+                Dim outputBoxLength = outputBox.Text.Length
+                outputBox.Text = outputBox.Text.Insert(outputBoxLength, media)
+            Next
+        Next
 
     End Sub
 End Class
