@@ -34,6 +34,9 @@ Partial Class CSVTemplateMerge
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.varHeaderBox = New System.Windows.Forms.ListBox()
+        Me.SaveOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         CType(Me.csvDataGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -77,6 +80,7 @@ Partial Class CSVTemplateMerge
         '
         'SaveToolStripMenuItem
         '
+        Me.SaveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveOutputToolStripMenuItem, Me.SaveTemplateToolStripMenuItem})
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
         Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
         Me.SaveToolStripMenuItem.Text = "Save"
@@ -127,6 +131,18 @@ Partial Class CSVTemplateMerge
         Me.varHeaderBox.Size = New System.Drawing.Size(184, 186)
         Me.varHeaderBox.TabIndex = 7
         '
+        'SaveOutputToolStripMenuItem
+        '
+        Me.SaveOutputToolStripMenuItem.Name = "SaveOutputToolStripMenuItem"
+        Me.SaveOutputToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SaveOutputToolStripMenuItem.Text = "Save Output"
+        '
+        'SaveTemplateToolStripMenuItem
+        '
+        Me.SaveTemplateToolStripMenuItem.Name = "SaveTemplateToolStripMenuItem"
+        Me.SaveTemplateToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SaveTemplateToolStripMenuItem.Text = "Save Template"
+        '
         'CSVTemplateMerge
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -161,5 +177,8 @@ Partial Class CSVTemplateMerge
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents varHeaderBox As System.Windows.Forms.ListBox
+    Friend WithEvents SaveOutputToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SaveTemplateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 
 End Class
