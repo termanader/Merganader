@@ -163,6 +163,7 @@ Partial Class CSVTemplateMerge
         Me.Controls.Add(Me.templateBox)
         Me.Controls.Add(Me.csvDataGrid)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "CSVTemplateMerge"
         Me.Text = "CSV Template Merganader"
