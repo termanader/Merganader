@@ -9,6 +9,7 @@ Public Class CSVTemplateMerge
     Dim rowCount As Integer
     Dim listVariables As New Generic.List(Of String)
     Dim csvTable As New DataTable
+
     Private Sub LoadDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadDataCSVToolStripMenuItem.Click
         Try
             Dim csvName As String = ""
@@ -75,6 +76,7 @@ Public Class CSVTemplateMerge
             csvDataGrid.DataSource = CSVFileTable
             csvTable = CSVFileTable.Copy()
             listSize = pubHeaders.Count - 1
+            varHeaderBox.Items.Clear()
             For i = 0 To listSize
                 varHeaderBox.Items.Add("<<" + pubHeaders(i) + ">>")
                 listVariables.Add("<<" + pubHeaders(i) + ">>")
@@ -86,44 +88,27 @@ Public Class CSVTemplateMerge
 
     End Sub
 
-    Private Sub SaveDataCSVAsToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim I As Integer = 0
-        Dim J As Integer = 0
-        Dim cellvalue$
-        Dim rowLine As String = ""
+    Private Sub LoadTemplateToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadTemplateToolStripMenuItem.Click
+        Dim tplName = ""
         Try
-            Dim objWriter As New System.IO.StreamWriter(csvName, True)
-            For J = 0 To (csvDataGrid.RowCount - 2)
-                For I = 0 To (csvDataGrid.ColumnCount - 2)
-                    If Not TypeOf csvDataGrid.CurrentRow.Cells.Item(I).Value Is DBNull Then
-                        cellvalue = csvDataGrid.Item(I, J).Value
-                    Else
-                        cellvalue = ""
-                    End If
-                    rowLine = rowLine + cellvalue + ","
-                Next
-                objWriter.WriteLine(rowLine)
-
-                rowLine = ""
-
-            Next
-
-            objWriter.Close()
-
-            MsgBox("Text written to file")
-
+            OpenFileDialog1.InitialDirectory = "c:\temp\"
+            OpenFileDialog1.Filter = "TXT files (*.txt)|*.txt"
+            OpenFileDialog1.FilterIndex = 2
+            OpenFileDialog1.RestoreDirectory = True
+            OpenFileDialog1.Multiselect = False
+            If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                Dim tplRead As IO.StreamReader
+                tplName = OpenFileDialog1.FileName
+                tplRead = IO.File.OpenText(tplName)
+                templateBox.Text = tplRead.ReadToEnd
+                tplRead.Close()
+            End If
         Catch ex As Exception
-
-            MessageBox.Show("Error occured while writing to the file." + ex.ToString())
-
-        Finally
-
-            FileClose(1)
-
+            MsgBox(ex.Message)
         End Try
 
-    End Sub
 
+    End Sub
 
     Private Sub varHeaderBox_DoubleClick(sender As Object, e As EventArgs) Handles varHeaderBox.MouseDoubleClick
         templateBox.Text = templateBox.Text.Insert(0, varHeaderBox.SelectedItem)
@@ -157,26 +142,28 @@ Public Class CSVTemplateMerge
 
     End Sub
 
-    Private Sub LoadTemplateToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadTemplateToolStripMenuItem.Click
-        Dim tplName = ""
-        Try
-            OpenFileDialog1.InitialDirectory = "c:\temp\"
-            OpenFileDialog1.Filter = "TXT files (*.txt)|*.txt"
-            OpenFileDialog1.FilterIndex = 2
-            OpenFileDialog1.RestoreDirectory = True
-            OpenFileDialog1.Multiselect = False
-            If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                Dim tplRead As IO.StreamReader
-                tplName = OpenFileDialog1.FileName
-                tplRead = IO.File.OpenText(tplName)
-                templateBox.Text = tplRead.ReadToEnd
-                tplRead.Close()
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-
-
+    Private Sub SaveDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveDataCSVToolStripMenuItem.Click
+        Dim saveCSV As String = ""
+        SaveFileDialog1.InitialDirectory = "c:\temp\"
+        SaveFileDialog1.Filter = "CSV files (*.csv)|*.csv"
+        SaveFileDialog1.FilterIndex = 2
+        SaveFileDialog1.RestoreDirectory = True
+        If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            saveCSV = SaveFileDialog1.FileName
+        End If
+        If saveCSV <> "" Then
+            Dim headers = (From header As DataGridViewColumn In csvDataGrid.Columns.Cast(Of DataGridViewColumn)() _
+                          Select header.HeaderText).ToArray
+            Dim rows = From row As DataGridViewRow In csvDataGrid.Rows.Cast(Of DataGridViewRow)() Where Not row.IsNewRow _
+                       Select Array.ConvertAll(row.Cells.Cast(Of DataGridViewCell).ToArray, Function(c) If(c.Value IsNot Nothing, c.Value.ToString, ""))
+            Using sw As New IO.StreamWriter(saveCSV)
+                sw.WriteLine(String.Join(",", headers))
+                For Each r In rows
+                    sw.WriteLine(String.Join(",", r))
+                Next
+            End Using
+            'Process.Start(saveCSV)
+        End If
     End Sub
 
     Private Sub SaveOutputToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveOutputToolStripMenuItem.Click
@@ -237,4 +224,7 @@ Public Class CSVTemplateMerge
         End Try
 
     End Sub
+
+
+
 End Class

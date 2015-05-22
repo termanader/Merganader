@@ -37,6 +37,7 @@ Partial Class CSVTemplateMerge
         Me.SaveOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.SaveDataCSVToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.csvDataGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -44,6 +45,7 @@ Partial Class CSVTemplateMerge
         'csvDataGrid
         '
         Me.csvDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.csvDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.csvDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.csvDataGrid.Location = New System.Drawing.Point(12, 27)
         Me.csvDataGrid.Name = "csvDataGrid"
@@ -80,7 +82,7 @@ Partial Class CSVTemplateMerge
         '
         'SaveToolStripMenuItem
         '
-        Me.SaveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveOutputToolStripMenuItem, Me.SaveTemplateToolStripMenuItem})
+        Me.SaveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveOutputToolStripMenuItem, Me.SaveTemplateToolStripMenuItem, Me.SaveDataCSVToolStripMenuItem})
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
         Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
         Me.SaveToolStripMenuItem.Text = "Save"
@@ -143,6 +145,12 @@ Partial Class CSVTemplateMerge
         Me.SaveTemplateToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SaveTemplateToolStripMenuItem.Text = "Save Template"
         '
+        'SaveDataCSVToolStripMenuItem
+        '
+        Me.SaveDataCSVToolStripMenuItem.Name = "SaveDataCSVToolStripMenuItem"
+        Me.SaveDataCSVToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SaveDataCSVToolStripMenuItem.Text = "Save Data CSV"
+        '
         'CSVTemplateMerge
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -180,5 +188,6 @@ Partial Class CSVTemplateMerge
     Friend WithEvents SaveOutputToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SaveTemplateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents SaveDataCSVToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
