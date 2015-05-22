@@ -7,6 +7,7 @@ Public Class CSVTemplateMerge
     Dim listSize As Integer
     Dim rowCount As Integer
     Dim listVariables As New Generic.List(Of String)
+    Dim csvTable As New DataTable
     Private Sub LoadDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadDataCSVToolStripMenuItem.Click
         Dim csvName As String = ""
         OpenFileDialog1.InitialDirectory = "c:\temp\"
@@ -69,6 +70,7 @@ Public Class CSVTemplateMerge
         CSVFileTable.Rows.RemoveAt(0)
         rowCount = CSVFileTable.Rows.Count
         csvDataGrid.DataSource = CSVFileTable
+        csvTable = CSVFileTable.Copy()
         listSize = pubHeaders.Count - 1
         For i = 0 To listSize
             varHeaderBox.Items.Add("<<" + pubHeaders(i) + ">>")
@@ -125,11 +127,16 @@ Public Class CSVTemplateMerge
         Dim temp = templateBox.Text
         For i = 1 To rowCount
             Dim media = temp
-            For l = 0 To listSize
-                media = media.Replace(listVariables(l), 11)
-                Dim outputBoxLength = outputBox.Text.Length
-                outputBox.Text = outputBox.Text.Insert(outputBoxLength, media)
+
+            For l = 0 To listSize - 1
+                Dim arRow = csvTable.Rows.Item(l)
+                Dim rowLength As Integer = arRow.Table.Columns.Count - 1
+                For r = 0 To rowLength
+                    media = media.Replace(listVariables(r), arRow(r))
+                Next
             Next
+            Dim outputBoxLength = outputBox.Text.Length
+            outputBox.Text = outputBox.Text.Insert(outputBoxLength, media)
         Next
 
     End Sub
