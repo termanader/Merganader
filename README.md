@@ -1,18 +1,14 @@
 # Merganader
 
-
-
 ## Screenshot
 
-[![CSV Template Merganader Screenshot](http://i.imgur.com/tbM0y21.jpg)]
+![CSV Template Merganader Screenshot](http://i.imgur.com/tbM0y21.jpg)
 
 ## Installation
 
 
-
 ## Requirements
-.NET Framework
-
+.NET Framework 4.5
 
 ## Usage
 1. Load a CSV (1data.csv)
@@ -22,11 +18,13 @@
 
 The app uses the first row of the CSV as variable names.
 You can double click the variable list in the left listbox and it adds them to the template box.
-Any instance of the <<var>> string will be replaced with the row's column.  
-For instance, <<team>><<team>><<team>><<team>><<team>> would result
-in an output of :
+Any instance of the &lt;&lt;var&gt;&gt; string will be replaced with the row's column.  
+For instance, &lt;&lt;team&gt;&gt;&lt;&lt;team&gt;&gt;&lt;&lt;team&gt;&gt;&lt;&lt;team&gt;&gt;&lt;&lt;team&gt;&gt; would result in an output of :
+
 alphaalphaalphaalphaalpha
+
 bravobravobravobravobravo
+
 charliecharliecharliecharliecharlie
 
 
