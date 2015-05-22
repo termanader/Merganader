@@ -125,18 +125,25 @@ Public Class CSVTemplateMerge
 
     Private Sub genresButton_Click(sender As Object, e As EventArgs) Handles genresButton.Click
         Dim temp = templateBox.Text
-        For i = 1 To rowCount
-            Dim media = temp
+        Dim outputBoxLength = outputBox.Text.Length
+        Dim media = temp
+        'For i = 1 To rowCount
 
-            For l = 0 To listSize - 1
-                Dim arRow = csvTable.Rows.Item(l)
-                Dim rowLength As Integer = arRow.Table.Columns.Count - 1
-                For r = 0 To rowLength
-                    media = media.Replace(listVariables(r), arRow(r))
-                Next
+        Dim arMedia As New Generic.List(Of String)
+        For l = 0 To listSize - 1
+            Dim arRow = csvTable.Rows.Item(l)
+            Dim rowLength As Integer = arRow.Table.Columns.Count - 1
+            arMedia.Add(media)
+            media = temp
+            For r = 0 To rowLength
+                media = media.Replace(listVariables(r), arRow(r))
             Next
-            Dim outputBoxLength = outputBox.Text.Length
-            outputBox.Text = outputBox.Text.Insert(outputBoxLength, media)
+        Next
+        arMedia.Add(media)
+        For i = 1 To listSize
+            outputBoxLength = outputBox.Text.Length
+            outputBox.Text = outputBox.Text.Insert(outputBoxLength, arMedia.Item(i))
+            outputBox.Text = outputBox.Text + Environment.NewLine
         Next
 
     End Sub
