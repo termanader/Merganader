@@ -28,7 +28,6 @@ Partial Class CSVTemplateMerge
         Me.LoadDataCSVToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveDataCSVAsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.templateBox = New System.Windows.Forms.TextBox()
         Me.genresButton = New System.Windows.Forms.Button()
         Me.outputBox = New System.Windows.Forms.TextBox()
@@ -78,16 +77,9 @@ Partial Class CSVTemplateMerge
         '
         'SaveToolStripMenuItem
         '
-        Me.SaveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveDataCSVAsToolStripMenuItem})
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
         Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
         Me.SaveToolStripMenuItem.Text = "Save"
-        '
-        'SaveDataCSVAsToolStripMenuItem
-        '
-        Me.SaveDataCSVAsToolStripMenuItem.Name = "SaveDataCSVAsToolStripMenuItem"
-        Me.SaveDataCSVAsToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
-        Me.SaveDataCSVAsToolStripMenuItem.Text = "Data CSV as..."
         '
         'templateBox
         '
@@ -96,8 +88,6 @@ Partial Class CSVTemplateMerge
         Me.templateBox.Name = "templateBox"
         Me.templateBox.Size = New System.Drawing.Size(340, 215)
         Me.templateBox.TabIndex = 3
-        Me.templateBox.Text = "{" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & """<<team>>"" : [" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""0"",""<<player0>>""]," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""1"",""<<player1>>""]," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "[""2"",""<<pla" & _
-    "yer2>>""]" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(9) & "]" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "}"
         '
         'genresButton
         '
@@ -170,7 +160,6 @@ Partial Class CSVTemplateMerge
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents SaveDataCSVAsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents varHeaderBox As System.Windows.Forms.ListBox
 
 End Class

@@ -1,5 +1,6 @@
 ﻿'Imports LINQtoCSV
 Imports System
+Imports System.IO
 Imports Microsoft
 
 Public Class CSVTemplateMerge
@@ -14,6 +15,7 @@ Public Class CSVTemplateMerge
         OpenFileDialog1.Filter = "CSV files (*.csv)|*.CSV"
         OpenFileDialog1.FilterIndex = 2
         OpenFileDialog1.RestoreDirectory = True
+        OpenFileDialog1.Multiselect = False
         If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
             csvName = OpenFileDialog1.FileName
         End If
@@ -79,7 +81,7 @@ Public Class CSVTemplateMerge
 
     End Sub
 
-    Private Sub SaveDataCSVAsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveDataCSVAsToolStripMenuItem.Click
+    Private Sub SaveDataCSVAsToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim I As Integer = 0
         Dim J As Integer = 0
         Dim cellvalue$
@@ -128,16 +130,18 @@ Public Class CSVTemplateMerge
         Dim outputBoxLength = outputBox.Text.Length
         Dim media = temp
         'For i = 1 To rowCount
-
+        outputBox.Text = ""
         Dim arMedia As New Generic.List(Of String)
         For l = 0 To listSize - 1
             Dim arRow = csvTable.Rows.Item(l)
             Dim rowLength As Integer = arRow.Table.Columns.Count - 1
             arMedia.Add(media)
             media = temp
+
             For r = 0 To rowLength
                 media = media.Replace(listVariables(r), arRow(r))
             Next
+
         Next
         arMedia.Add(media)
         For i = 1 To listSize
@@ -147,4 +151,22 @@ Public Class CSVTemplateMerge
         Next
 
     End Sub
+
+    Private Sub LoadTemplateToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadTemplateToolStripMenuItem.Click
+        Dim tplName = ""
+
+        OpenFileDialog1.InitialDirectory = "c:\temp\"
+        OpenFileDialog1.Filter = "TXT files (*.txt)|*.txt"
+        OpenFileDialog1.FilterIndex = 2
+        OpenFileDialog1.RestoreDirectory = True
+        If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            Dim tplRead As IO.StreamReader
+            tplName = OpenFileDialog1.FileName
+            tplRead = IO.File.OpenText(tplName)
+            templateBox.Text = tplRead.ReadToEnd
+            tplRead.Close()
+        End If
+
+    End Sub
+
 End Class
