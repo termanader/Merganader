@@ -13,18 +13,18 @@ Public Class CSVTemplateMerge
     Private Sub LoadDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadDataCSVToolStripMenuItem.Click
         Try
             Dim csvName As String = ""
-            OpenFileDialog1.InitialDirectory = "c:\temp\"
-            OpenFileDialog1.Filter = "CSV files (*.csv)|*.CSV"
-            OpenFileDialog1.FilterIndex = 2
-            OpenFileDialog1.RestoreDirectory = True
-            OpenFileDialog1.Multiselect = False
-            If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            OpenFileDialog1.InitialDirectory = "c:\temp\"                                       'doesnt actually open c/temp
+            OpenFileDialog1.Filter = "CSV files (*.csv)|*.csv"                                  'filters for CSVs
+            OpenFileDialog1.FilterIndex = 2                                                     'sets the filterindex to 2, otherwise out of bounds. 
+            OpenFileDialog1.RestoreDirectory = True                                             'remembers the directory you last opened
+            OpenFileDialog1.Multiselect = False                                                 'only allows selecting of 1 file
+            If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then              'if user clicks OK, grab the filename and set it to csvName
                 csvName = OpenFileDialog1.FileName
             End If
-            Me.StatusStrip1.Text = csvName
-            Dim CSVFileReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(csvName)
-            CSVFileReader.TextFieldType = FileIO.FieldType.Delimited
-            CSVFileReader.SetDelimiters(",")
+            Me.StatusStrip1.Text = csvName                                                      'set the StatusStrip1 to read the csvName DOESNT WORK
+            Dim CSVFileReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(csvName)      'inits the csv reader, passes in the csvName
+            CSVFileReader.TextFieldType = FileIO.FieldType.Delimited                            'indicates it is delimited, as opposed to fixed width
+            CSVFileReader.SetDelimiters(",")                                                    'indicates the delimiter - could potentially make this a preferences variable. 
 
             Dim CSVFileTable As DataTable = Nothing
 
@@ -48,7 +48,7 @@ Public Class CSVTemplateMerge
                             Dim colHeaders(UpperBound)
                             For ColumnCount = 0 To UpperBound
                                 colHeaders(ColumnCount) = CurrentRow(ColumnCount).ToString
-                                pubHeaders.Add(colHeaders(ColumnCount).ToString)
+                                pubHeaders.Add(colHeaders(ColumnCount).ToString)                'use the column headers as column names
                             Next
                             For ColumnCount = 0 To UpperBound
                                 Column = New DataColumn
@@ -74,12 +74,12 @@ Public Class CSVTemplateMerge
             CSVFileTable.Rows.RemoveAt(0)
             rowCount = CSVFileTable.Rows.Count
             csvDataGrid.DataSource = CSVFileTable
-            csvTable = CSVFileTable.Copy()
-            listSize = pubHeaders.Count - 1
-            varHeaderBox.Items.Clear()
+            csvTable = CSVFileTable.Copy()                                                              ' makes the csvTable public
+            listSize = pubHeaders.Count - 1                                                             ' accounts for header row
+            varHeaderBox.Items.Clear()                                                                  ' empties the listbox so new entries wouldnt be appended to bottom of old list
             For i = 0 To listSize
-                varHeaderBox.Items.Add("<<" + pubHeaders(i) + ">>")
-                listVariables.Add("<<" + pubHeaders(i) + ">>")
+                varHeaderBox.Items.Add("<<" + pubHeaders(i) + ">>")                                     'Adds the << >> brackets for search/replace later
+                listVariables.Add("<<" + pubHeaders(i) + ">>")                                          'creates a list of variables with the same entries.
             Next
         Catch exp As Exception
             MsgBox(exp.Message)
@@ -92,10 +92,11 @@ Public Class CSVTemplateMerge
         Dim tplName = ""
         Try
             OpenFileDialog1.InitialDirectory = "c:\temp\"
-            OpenFileDialog1.Filter = "TXT files (*.txt)|*.txt"
+            OpenFileDialog1.Filter = "Text files (*.txt)|*.txt|TPL Files (*.tpl)|*.tpl"
             OpenFileDialog1.FilterIndex = 2
             OpenFileDialog1.RestoreDirectory = True
             OpenFileDialog1.Multiselect = False
+
             If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
                 Dim tplRead As IO.StreamReader
                 tplName = OpenFileDialog1.FileName
@@ -103,6 +104,7 @@ Public Class CSVTemplateMerge
                 templateBox.Text = tplRead.ReadToEnd
                 tplRead.Close()
             End If
+
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -119,10 +121,11 @@ Public Class CSVTemplateMerge
         Dim temp = templateBox.Text
         Dim outputBoxLength = outputBox.Text.Length
         Dim media = temp
-        'For i = 1 To rowCount
-        outputBox.Text = ""
         Dim arMedia As New Generic.List(Of String)
-        For l = 0 To listSize - 1
+
+        outputBox.Text = ""
+
+        For l = 0 To rowCount - 1
             Dim arRow = csvTable.Rows.Item(l)
             Dim rowLength As Integer = arRow.Table.Columns.Count - 1
             arMedia.Add(media)
@@ -134,7 +137,7 @@ Public Class CSVTemplateMerge
 
         Next
         arMedia.Add(media)
-        For i = 1 To listSize
+        For i = 1 To rowCount
             outputBoxLength = outputBox.Text.Length
             outputBox.Text = outputBox.Text.Insert(outputBoxLength, arMedia.Item(i))
             outputBox.Text = outputBox.Text + Environment.NewLine
@@ -144,16 +147,17 @@ Public Class CSVTemplateMerge
 
     Private Sub SaveDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveDataCSVToolStripMenuItem.Click
         Dim saveCSV As String = ""
+
         SaveFileDialog1.InitialDirectory = "c:\temp\"
         SaveFileDialog1.Filter = "CSV files (*.csv)|*.csv"
         SaveFileDialog1.FilterIndex = 2
         SaveFileDialog1.RestoreDirectory = True
+
         If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
             saveCSV = SaveFileDialog1.FileName
         End If
         If saveCSV <> "" Then
-            Dim headers = (From header As DataGridViewColumn In csvDataGrid.Columns.Cast(Of DataGridViewColumn)() _
-                          Select header.HeaderText).ToArray
+            Dim headers = (From header As DataGridViewColumn In csvDataGrid.Columns.Cast(Of DataGridViewColumn)() Select header.HeaderText).ToArray
             Dim rows = From row As DataGridViewRow In csvDataGrid.Rows.Cast(Of DataGridViewRow)() Where Not row.IsNewRow _
                        Select Array.ConvertAll(row.Cells.Cast(Of DataGridViewCell).ToArray, Function(c) If(c.Value IsNot Nothing, c.Value.ToString, ""))
             Using sw As New IO.StreamWriter(saveCSV)
@@ -173,7 +177,7 @@ Public Class CSVTemplateMerge
 
 
                 SaveFileDialog1.InitialDirectory = "c:\temp\"
-                SaveFileDialog1.Filter = "TXT files (*.txt)|*.txt"
+                SaveFileDialog1.Filter = "Text files (*.txt)|*.txt|All Files (*.*)|*.*"
                 SaveFileDialog1.FilterIndex = 2
                 SaveFileDialog1.RestoreDirectory = True
                 If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
@@ -202,7 +206,7 @@ Public Class CSVTemplateMerge
 
 
                 SaveFileDialog1.InitialDirectory = "c:\temp\"
-                SaveFileDialog1.Filter = "TXT files (*.txt)|*.txt"
+                SaveFileDialog1.Filter = "Text files (*.txt)|*.txt|TPL files (*.tpl)|*.tpl"
                 SaveFileDialog1.FilterIndex = 2
                 SaveFileDialog1.RestoreDirectory = True
                 If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
