@@ -11,11 +11,23 @@
 
 
 ## Requirements
-
+.NET Framework
 
 
 ## Usage
+1. Load a CSV (1data.csv)
+2. Load a Template (2template.txt)
+3. push generate. 
+4. Save the output. 
 
+The app uses the first row of the CSV as variable names.
+You can double click the variable list in the left listbox and it adds them to the template box.
+Any instance of the <<var>> string will be replaced with the row's column.  
+For instance, <<team>><<team>><<team>><<team>><<team>> would result
+in an output of :
+alphaalphaalphaalphaalpha
+bravobravobravobravobravo
+charliecharliecharliecharliecharlie
 
 
 ## Contributing
@@ -28,9 +40,14 @@
 
 ## History/Changelog
 
+As of 5/22 - the code is working very well.
 
 
 ## Future/To-Do
+
+1. Separate form code into a dll.
+2. Allow command line calls
+3. Template specials (split output into files by row, allow some basic logic)
 
 
 
