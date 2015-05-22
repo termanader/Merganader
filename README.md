@@ -4,7 +4,7 @@
 
 ## Screenshot
 
-
+[![CSV Template Merganader Screenshot](http://i.imgur.com/tbM0y21.jpg)]
 
 ## Installation
 
