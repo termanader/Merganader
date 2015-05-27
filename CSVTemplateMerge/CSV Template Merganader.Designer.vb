@@ -28,18 +28,20 @@ Partial Class CSVTemplateMerge
         Me.LoadDataCSVToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveDataCSVToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.templateBox = New System.Windows.Forms.TextBox()
         Me.genresButton = New System.Windows.Forms.Button()
         Me.outputBox = New System.Windows.Forms.TextBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.StatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.varHeaderBox = New System.Windows.Forms.ListBox()
-        Me.SaveOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveTemplateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.SaveDataCSVToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.csvDataGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'csvDataGrid
@@ -87,6 +89,24 @@ Partial Class CSVTemplateMerge
         Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
         Me.SaveToolStripMenuItem.Text = "Save"
         '
+        'SaveOutputToolStripMenuItem
+        '
+        Me.SaveOutputToolStripMenuItem.Name = "SaveOutputToolStripMenuItem"
+        Me.SaveOutputToolStripMenuItem.Size = New System.Drawing.Size(151, 22)
+        Me.SaveOutputToolStripMenuItem.Text = "Save Output"
+        '
+        'SaveTemplateToolStripMenuItem
+        '
+        Me.SaveTemplateToolStripMenuItem.Name = "SaveTemplateToolStripMenuItem"
+        Me.SaveTemplateToolStripMenuItem.Size = New System.Drawing.Size(151, 22)
+        Me.SaveTemplateToolStripMenuItem.Text = "Save Template"
+        '
+        'SaveDataCSVToolStripMenuItem
+        '
+        Me.SaveDataCSVToolStripMenuItem.Name = "SaveDataCSVToolStripMenuItem"
+        Me.SaveDataCSVToolStripMenuItem.Size = New System.Drawing.Size(151, 22)
+        Me.SaveDataCSVToolStripMenuItem.Text = "Save Data CSV"
+        '
         'templateBox
         '
         Me.templateBox.Location = New System.Drawing.Point(204, 229)
@@ -106,20 +126,29 @@ Partial Class CSVTemplateMerge
         '
         'outputBox
         '
+        Me.outputBox.BackColor = System.Drawing.SystemColors.Window
         Me.outputBox.Location = New System.Drawing.Point(13, 451)
         Me.outputBox.Multiline = True
         Me.outputBox.Name = "outputBox"
+        Me.outputBox.ReadOnly = True
         Me.outputBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.outputBox.Size = New System.Drawing.Size(531, 129)
         Me.outputBox.TabIndex = 5
+        Me.outputBox.WordWrap = False
         '
         'StatusStrip1
         '
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusLabel})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 586)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(556, 22)
         Me.StatusStrip1.TabIndex = 6
         Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'StatusLabel
+        '
+        Me.StatusLabel.Name = "StatusLabel"
+        Me.StatusLabel.Size = New System.Drawing.Size(0, 17)
         '
         'OpenFileDialog1
         '
@@ -132,24 +161,6 @@ Partial Class CSVTemplateMerge
         Me.varHeaderBox.Name = "varHeaderBox"
         Me.varHeaderBox.Size = New System.Drawing.Size(184, 186)
         Me.varHeaderBox.TabIndex = 7
-        '
-        'SaveOutputToolStripMenuItem
-        '
-        Me.SaveOutputToolStripMenuItem.Name = "SaveOutputToolStripMenuItem"
-        Me.SaveOutputToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.SaveOutputToolStripMenuItem.Text = "Save Output"
-        '
-        'SaveTemplateToolStripMenuItem
-        '
-        Me.SaveTemplateToolStripMenuItem.Name = "SaveTemplateToolStripMenuItem"
-        Me.SaveTemplateToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.SaveTemplateToolStripMenuItem.Text = "Save Template"
-        '
-        'SaveDataCSVToolStripMenuItem
-        '
-        Me.SaveDataCSVToolStripMenuItem.Name = "SaveDataCSVToolStripMenuItem"
-        Me.SaveDataCSVToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.SaveDataCSVToolStripMenuItem.Text = "Save Data CSV"
         '
         'CSVTemplateMerge
         '
@@ -170,6 +181,8 @@ Partial Class CSVTemplateMerge
         CType(Me.csvDataGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -190,5 +203,5 @@ Partial Class CSVTemplateMerge
     Friend WithEvents SaveTemplateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents SaveDataCSVToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-
+    Friend WithEvents StatusLabel As ToolStripStatusLabel
 End Class

@@ -113,7 +113,10 @@ Public Class CSVTemplateMerge
     End Sub
 
     Private Sub varHeaderBox_DoubleClick(sender As Object, e As EventArgs) Handles varHeaderBox.MouseDoubleClick
-        templateBox.Text = templateBox.Text.Insert(0, varHeaderBox.SelectedItem)
+        If templateBox.ReadOnly = False Then
+            templateBox.Text = templateBox.Text.Insert(0, varHeaderBox.SelectedItem)
+        End If
+
 
     End Sub
 
@@ -122,52 +125,95 @@ Public Class CSVTemplateMerge
         Dim outputBoxLength = outputBox.Text.Length
         Dim media = temp
         Dim arMedia As New Generic.List(Of String)
+        Dim varUsed As New Generic.List(Of String)
+        Dim varUsedIndex As New Generic.List(Of Integer)
+        Dim varUsedCount As Integer
+        Dim sw As New Stopwatch
+        Try
 
-        outputBox.Text = ""
 
-        For l = 0 To rowCount - 1
-            Dim arRow = csvTable.Rows.Item(l)
-            Dim rowLength As Integer = arRow.Table.Columns.Count - 1
-            arMedia.Add(media)
-            media = temp
+            If temp IsNot "" And listSize <> 0 Then
 
-            For r = 0 To rowLength
-                media = media.Replace(listVariables(r), arRow(r))
-            Next
+                For i = 0 To listSize
+                    If media.Contains(listVariables(i)) Then
+                        varUsed.Add(listVariables(i))
+                        varUsedIndex.Add(listVariables.IndexOf(listVariables(i)))                                                   'creates a list of the indices of the variables used
+                    End If
+                Next
+                'templateBox.ReadOnly = True
+                varUsedCount = varUsed.Count
 
-        Next
-        arMedia.Add(media)
-        For i = 1 To rowCount
-            outputBoxLength = outputBox.Text.Length
-            outputBox.Text = outputBox.Text.Insert(outputBoxLength, arMedia.Item(i))
-            outputBox.Text = outputBox.Text + Environment.NewLine
-        Next
+                outputBox.Text = ""                                                                                                 'clears output box to start fresh
+                sw.Start()
+                StatusLabel.Text = "Running for: "
+                For l = 0 To rowCount - 1
+                    Dim arRow = csvTable.Rows.Item(l)
+                    Dim rowLength As Integer = arRow.Table.Columns.Count - 1
+                    arMedia.Add(media)
+                    media = temp
+
+                    'For r = 0 To rowLength
+                    '    media = media.Replace(listVariables(r), arRow(r))
+                    'Next
+
+                    'Goes through And only replaces the used variables instead of checking all of them.
+                    For r = 0 To varUsedCount - 1
+                        'Dim str = listVariables(varUsedIndex(r))
+                        'MessageBox.Show(str)
+                        media = media.Replace(listVariables(varUsedIndex(r)), arRow(varUsedIndex(r)))
+                    Next
+
+                Next
+
+                arMedia.Add(media)                                                                                  'enters last item into the array.
+                For i = 1 To rowCount
+                    'outputBoxLength = outputBox.Text.Length
+                    'outputBox.Text = outputBox.Text.Insert(outputBoxLength, arMedia.Item(i))
+                    outputBox.AppendText(arMedia(i))
+                    outputBox.Text = outputBox.Text + Environment.NewLine
+                    StatusLabel.Text = "Running for: " & (sw.ElapsedMilliseconds / 1000) & " seconds"
+                    Application.DoEvents()
+                Next
+                sw.Stop()
+                StatusLabel.Text = "Finished! It took " & (sw.ElapsedMilliseconds / 1000) & " seconds to finish running."
+                'templateBox.ReadOnly = False
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
 
     End Sub
 
     Private Sub SaveDataCSVToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveDataCSVToolStripMenuItem.Click
         Dim saveCSV As String = ""
+        Try
 
-        SaveFileDialog1.InitialDirectory = "c:\temp\"
-        SaveFileDialog1.Filter = "CSV files (*.csv)|*.csv"
-        SaveFileDialog1.FilterIndex = 2
-        SaveFileDialog1.RestoreDirectory = True
 
-        If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-            saveCSV = SaveFileDialog1.FileName
-        End If
-        If saveCSV <> "" Then
-            Dim headers = (From header As DataGridViewColumn In csvDataGrid.Columns.Cast(Of DataGridViewColumn)() Select header.HeaderText).ToArray
-            Dim rows = From row As DataGridViewRow In csvDataGrid.Rows.Cast(Of DataGridViewRow)() Where Not row.IsNewRow _
-                       Select Array.ConvertAll(row.Cells.Cast(Of DataGridViewCell).ToArray, Function(c) If(c.Value IsNot Nothing, c.Value.ToString, ""))
-            Using sw As New IO.StreamWriter(saveCSV)
-                sw.WriteLine(String.Join(",", headers))
-                For Each r In rows
-                    sw.WriteLine(String.Join(",", r))
-                Next
-            End Using
-            'Process.Start(saveCSV)
-        End If
+            SaveFileDialog1.InitialDirectory = "c:\temp\"
+            SaveFileDialog1.Filter = "CSV files (*.csv)|*.csv"
+            SaveFileDialog1.FilterIndex = 2
+            SaveFileDialog1.RestoreDirectory = True
+
+            If (SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                saveCSV = SaveFileDialog1.FileName
+            End If
+            If saveCSV <> "" Then
+                Dim headers = (From header As DataGridViewColumn In csvDataGrid.Columns.Cast(Of DataGridViewColumn)() Select header.HeaderText).ToArray
+                Dim rows = From row As DataGridViewRow In csvDataGrid.Rows.Cast(Of DataGridViewRow)() Where Not row.IsNewRow
+                           Select Array.ConvertAll(row.Cells.Cast(Of DataGridViewCell).ToArray, Function(c) If(c.Value IsNot Nothing, c.Value.ToString, ""))
+                Using sw As New IO.StreamWriter(saveCSV)
+                    sw.WriteLine(String.Join(",", headers))
+                    For Each r In rows
+                        sw.WriteLine(String.Join(",", r))
+                    Next
+                End Using
+                'Process.Start(saveCSV)
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 
     Private Sub SaveOutputToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveOutputToolStripMenuItem.Click
@@ -228,7 +274,6 @@ Public Class CSVTemplateMerge
         End Try
 
     End Sub
-
 
 
 End Class
