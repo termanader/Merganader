@@ -48,6 +48,7 @@ As of 5/22 - the code is working very well.
 1. Separate form code into a dll.
 2. Allow command line calls
 3. Template specials (split output into files by row, allow some basic logic)
+4. Header/Footer that append to top and bottom of output file. 
 
 
 
